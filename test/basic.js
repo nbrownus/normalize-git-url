@@ -4,8 +4,20 @@ var normalize = require("../normalize-git-url.js")
 
 test("basic normalization tests", function (t) {
   t.same(
+    normalize("git+ssh://user@hostname:project.git"),
+    { url : "ssh://user@hostname:project.git", branch : "master" }
+  )
+  t.same(
+      normalize("git+ssh://user@hostname:project.git"),
+      { url : "ssh://user@hostname:project.git", branch : "master" }
+  )
+  t.same(
+    normalize("git+ssh://user@hostname/:project.git"),
+    { url : "ssh://user@hostname/:project.git", branch : "master" }
+  )
+  t.same(
     normalize("git+ssh://user@hostname:project.git#commit-ish"),
-    { url : "ssh://user@hostname/project.git", branch : "commit-ish" }
+    { url : "ssh://user@hostname:project.git", branch : "commit-ish" }
   )
   t.same(
     normalize("git+http://user@hostname/project/blah.git#commit-ish"),
@@ -17,11 +29,11 @@ test("basic normalization tests", function (t) {
   )
   t.same(
     normalize("git+ssh://git@github.com:npm/npm.git#v1.0.27"),
-    { url : "ssh://git@github.com/npm/npm.git", branch : "v1.0.27" }
+    { url : "ssh://git@github.com:npm/npm.git", branch : "v1.0.27" }
   )
   t.same(
     normalize("git+ssh://git@github.com:org/repo#dev"),
-    { url : "ssh://git@github.com/org/repo", branch : "dev" }
+    { url : "ssh://git@github.com:org/repo", branch : "dev" }
   )
   t.same(
     normalize("git+ssh://git@github.com/org/repo#dev"),
@@ -45,11 +57,11 @@ test("basic normalization tests", function (t) {
   )
   t.same(
     normalize("git+ssh://git@git.example.com:b/b.git#v1.0.0"),
-    { url : "ssh://git@git.example.com/b/b.git", branch : "v1.0.0" }
+    { url : "ssh://git@git.example.com:b/b.git", branch : "v1.0.0" }
   )
   t.same(
     normalize("git+ssh://git@github.com:npm/npm-proto.git#othiym23/organized"),
-    { url : "ssh://git@github.com/npm/npm-proto.git", branch : "othiym23/organized" }
+    { url : "ssh://git@github.com:npm/npm-proto.git", branch : "othiym23/organized" }
   )
 
   t.end()
